@@ -1,3 +1,5 @@
+DROP DATABASE `UserDetailDB`;
+
 CREATE DATABASE `UserDetailDB`;
 
 CREATE TABLE `Users`(
@@ -9,9 +11,9 @@ CREATE TABLE `Users`(
 CREATE TABLE `UserDetail`(
     `Id` INT PRIMARY KEY AUTO_INCREMENT,
     `UserId` INT,
-    `FirstName` VARCHAR(250),
-    `LastName` VARCHAR(250),
-    `MobileNumber` VARCHAR(250),
-    `Email` VARCHAR(250),
+    `FirstName` VARCHAR(250) NOT NULL,
+    `LastName` VARCHAR(250) NOT NULL,
+    `MobileNumber` VARCHAR(250) NOT NULL,
+    `Email` VARCHAR(250) NOT NULL,
     FOREIGN KEY (`UserId`) REFERENCES `Users`(`Id`) 
 );

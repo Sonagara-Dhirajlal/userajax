@@ -17,12 +17,46 @@ include "./includes/connection.php";
         <input type="text" id="password" />
         <input type="button" value="Submit" onclick="insertData()" />
     </form>
+
+    <table border="1">
+        <thead>
+            <th>Username</th>
+            <th>Password</th>
+        </thead>
+        <tbody id="tableBody">
+
+        </tbody>
+    </table>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
+
+        $(dispalyData());
+
+        function dispalyData(){
+            $.ajax({
+                url : "./api/fetchAll.php",
+                type: "POST",
+                success: function(response){
+                    console.log(response.users);
+                    
+                    let html = ''
+                    for(let i = 0; i < response.users.length; i++){
+                        html += `
+                        <tr>
+                            <td>${response.users[i].Username}</td>
+                            <td>${response.users[i].Password}</td>
+                        </tr>
+                        `
+                    }
+                    $("#tableBody").html(html);
+                }
+            });
+        }
+
         function insertData() {
                 let data = {
-                    username: $('#username').val(),
-                    password: $('#password').val(),
+                    username: $("#username").val(),
+                    password: $("#password").val(),
                 }
 
                 $.ajax({
