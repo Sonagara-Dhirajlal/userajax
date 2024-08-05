@@ -15,13 +15,15 @@ include "./includes/connection.php";
     <form>
         <input type="text" id="username"  autofocus />
         <input type="text" id="password" />
-        <input type="button" value="Submit" onclick="insertData()" />
+        <input type="button" value="Submit" onclick="insertData()" /> 
     </form>
 
     <table border="1">
         <thead>
             <th>Username</th>
             <th>Password</th>
+            <th>Delete</th>
+            <th>Update</th>
         </thead>
         <tbody id="tableBody">
 
@@ -30,9 +32,9 @@ include "./includes/connection.php";
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
 
-        $(dispalyData());
+        $(displayData());
 
-        function dispalyData(){
+        function displayData(){
             $.ajax({
                 url : "./api/fetchAll.php",
                 type: "POST",
@@ -45,6 +47,8 @@ include "./includes/connection.php";
                         <tr>
                             <td>${response.users[i].Username}</td>
                             <td>${response.users[i].Password}</td>
+                            <td><a href="#" onclick='deleteData(${response.users[i].Id})'>Delete</a></td>
+                            <td><a href="./pages/updatepage.php?id=${response.users[i].Id}">Update</a></td>
                         </tr>
                         `
                     }
@@ -64,16 +68,36 @@ include "./includes/connection.php";
                     type: "POST",
                     data: data,
                     success: function(response) {
-                        alert("Data inserted successfully");
+                        console.log(response.success);
+                        // alert "Inserted Successfully";
                         $('#username').val('');
                         $('#password').val('');
                         $('#username').focus();
+                        displayData();
                     },
                     error: function(e) {
-                        console.log('error');
+                        console.log(e);
                     }
                 });
                 }
+
+        function deleteData(id) {
+                            
+                $.ajax({
+                    url: "./api/delete.php",
+                    type: "POST",
+                    data: {
+                        id: id
+                    },
+                    success: function(response) {
+                        displayData();
+                    },
+                    error: function(e) {
+                        console.log(e);
+                    }
+                    });
+                    }
+
     </script>
 </body>
 </html>
